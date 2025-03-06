@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --gradient-1: #1a1a1a;
+            --gradient-2: #2d2d2d;
+            --accent: #00ff88;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--gradient-1), var(--gradient-2));
+            min-height: 100vh;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .nav-glass {
+            background: var(--glass) !important;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .upload-container {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-control {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff !important;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(0, 0, 0, 0.5);
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .image-card {
+            background: var(--glass);
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.1);
+        }
+
+        .image-preview {
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .price-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--accent);
+            color: #000;
+            font-weight: 700;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .btn-neon {
+            background: var(--accent);
+            color: #000;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-neon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.4);
+        }
+    </style>
+</head>
+<body class="py-4">
+    <nav class="navbar navbar-expand-lg nav-glass fixed-top">
+        <div class="container">
+            <a class="navbar-brand text-accent fw-bold" href="#">PIXELVAULT</a>
+            <li class="nav-item">
+                <a class="btn btn-neon" href="{{ url_for('auth.logout') }}">
+                    <i class="fas fa-arrow-right-from-bracket me-2"></i>Log Out
+                </a>
+            </li>
+        </div>
+    </nav>
+
+    <div class="container mt-5 pt-5">
+        <div class="upload-container p-4 mb-5">
+            <h3 class="text-center mb-4 fw-bold"><i class="fas fa-cloud-upload-alt me-2"></i>Upload New Content</h3>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label class="form-label">Image Title</label>
+                    <input type="text" name="title" class="form-control form-control-lg" required>
+                </div>
+                
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="form-label">Price (GHS)</label>
+                        <input type="number" name="price" class="form-control form-control-lg" required>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label class="form-label">Upload Image</label>
+                        <input type="file" name="file" class="form-control form-control-lg" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-neon w-100 mt-4 py-3">
+                    <i class="fas fa-rocket me-2"></i>Launch Upload
+                </button>
+            </form>
+        </div>
+
+        <h3 class="fw-bold mb-4"><i class="fas fa-cube me-2"></i>Digital Assets</h3>
+        <div class="row g-4">
+            {% for image in images %}
+            <div class="col-md-6 col-lg-4">
+                <div class="image-card">
+                    <div class="price-badge">GHS{{ image.price }}</div>
+                    <img src="{{ url_for('static', filename='uploads/' + image.filename) }}" 
+                         class="image-preview w-100">
+                    <div class="p-3">
+                        <h5 class="fw-bold mb-0">{{ image.title }}</h5>
+                        <div class="d-flex justify-content-between mt-3">
+                            
+                            <!-- ✅ Buy Button -->
+                            <a href="{{ url_for('app_routes.pay', image_id=image.id) }}" class="btn btn-sm btn-success">
+                                <i class="fas fa-shopping-cart me-1"></i> Buy
+                            </a>
+
+                            <!-- ✅ Edit Button -->
+                            <a href="{{ url_for('app_routes.edit_image', image_id=image.id) }}" class="btn btn-sm btn-neon me-2">
+                                <i class="fas fa-edit"></i>
+                            </a>
+
+                            <!-- ✅ Delete Button (with JavaScript confirmation) -->
+                            <form method="POST" action="{{ url_for('app_routes.delete_image', image_id=image.id) }}" onsubmit="return confirmDelete()">
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add smooth hover interactions
+        document.querySelectorAll('.image-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'rotateX(10deg) rotateY(10deg)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'none';
+            });
+        });
+
+        // ✅ Confirmation before deleting an image
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this image? This action cannot be undone.");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citadel Gallery | Secure Image Vault</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --neon-green: #00ff88;
+            --cyber-purple: #8a2be2;
+            --hologram-blue: #00e0ff;
+            --background-light: #f0f4f8;
+            --text-dark: #2c3e50;
+        }
+
+        .btn {
+            color: white !important;
+            background-color: black !important;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--background-light), #ffffff);
+            color: var(--text-dark);
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+        }
+
+        .gallery-container {
+            padding: 3rem 0;
+        }
+
+        .image-card {
+            background: white;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-container {
+            height: 300px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            border-radius: 15px 15px 0 0;
+            background-color: #f8f9fa;
+        }
+
+        .price-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: black;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: 800;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 2;
+        }
+
+        .btn-hologram {
+            background: black;
+            border: none;
+            color: white;
+            font-weight: 700;
+            padding: 12px 25px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-hologram:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .security-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: none;
+            place-items: center;
+            font-size: 2rem;
+            color: var(--neon-green);
+        }
+
+        @media (max-width: 768px) {
+            .image-card {
+                margin: 0 1rem 2rem;
+            }
+            
+            .image-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+   {% extends "base.html" %}
+
+{% block content %}
+<div class="gallery-container">
+    <div class="container">
+        <h1 class="text-center mb-3 display-4 fw-bold" style="margin-top: -30px;">
+            <span style="background: black; -webkit-background-clip: text; background-clip: text; color: transparent;">
+                <span style="color: gray;">Citadel</span> Art Gallery
+            </span>
+        </h1><br>
+        
+        
+        <div class="row">
+            {% for image in images %}
+            <div class="col-md-6 col-lg-4">
+                <div class="image-card">
+                    <div class="price-badge">GHS{{ image.price }}</div>
+
+                    <div class="image-container"
+                        style="background-image: url('{{ url_for("app_routes.secure_image", filename=image.filename) }}');">
+                    </div>
+
+                    <div class="p-4">
+                        <h3 class="fw-bold mb-3">{{ image.title }}</h3>
+                        <div class="d-flex justify-content-between">
+                            {% if image.id in purchased_images %}
+                                <a href="{{ url_for('app_routes.download', image_id=image.id) }}" 
+                                   class="btn btn-hologram w-100">
+                                    <i class="fas fa-download me-2"></i>Download Now
+                                </a>
+                            {% else %}
+                                <a href="{{ url_for('app_routes.pay', image_id=image.id) }}" 
+                                   class="btn btn-hologram w-100">
+                                    <i class="fas fa-lock-open me-2"></i>Unlock Image
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+    </div>
+</div>
+
+<div class="security-overlay" id="securityAlert">
+    <div class="text-center">
+        <i class="fas fa-shield-alt fa-beat mb-3"></i>
+        <p>Security Protocol Activated</p>
+    </div>
+</div>
+{% endblock %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const securityAlert = document.getElementById('securityAlert');
+    
+    const showSecurityAlert = () => {
+        securityAlert.style.display = 'grid';
+        setTimeout(() => securityAlert.style.display = 'none', 2000);
+    };
+
+    document.addEventListener("contextmenu", (e) => {
+        if (e.target.closest(".image-container")) {
+            e.preventDefault();
+            showSecurityAlert();
+        }
+    });
+
+    document.addEventListener("dragstart", (e) => {
+        if (e.target.closest(".image-container")) {
+            e.preventDefault();
+            showSecurityAlert();
+        }
+    });
+
+    document.addEventListener("keydown", (e) => {
+        const blockedKeys = [
+            ['control', 'u'], ['control', 'U'], 
+            ['control', 's'], ['control', 'p'],
+            ['F12'], ['control', 'shift', 'i']
+        ];
+
+        if (blockedKeys.some(keys => keys.every(key => e[key.toLowerCase() === key ? 'key' : 'ctrlKey' || 'shiftKey']))) {
+            e.preventDefault();
+            showSecurityAlert();
+        }
+    });
+</script>
+
+</body>
+</html>

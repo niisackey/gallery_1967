@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mountains+of+Christmas:wght@400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+         body{
+            scroll-behavior: smooth !important;
+            font-family: "Poppins", serif !important;
+        }
+      
+        .poppins-regular {
+        font-family: "Poppins", serif !important;
+        font-weight: 400 !important;
+        font-style: normal !important;
+        }
+    </style>
+</head>
+<body>
+{% extends "base.html" %}
+{% block content %}
+
+<div class="d-flex align-items-center justify-content-center vh-100">
+    <div class="login-container">
+        <!-- Header Section -->
+        <div class="text-center mb-5">
+            <h2 class="gradient-text">Welcome Back</h2>
+            <p class="text-neon">Sign in to Citadel Art Gallery</p>
+        </div>
+
+        <!-- Login Form -->
+        <form method="POST">
+            <div class="mb-4">
+                <label class="form-label text-soft">Username</label>
+                <input type="text" name="username" class="form-control" 
+                       required placeholder="👤 Enter username">
+            </div>
+            <div class="mb-4">
+                <label class="form-label text-soft">Password</label>
+                <input type="password" name="password" class="form-control" 
+                       required placeholder="🔒 Enter password">
+            </div>
+            <button type="submit" class="btn btn-glow w-100">
+                Unlock Portal
+                <span class="btn-arrow">→</span>
+            </button>
+        </form>
+        
+        <!-- Help Links -->
+        
+    </div>
+</div>
+
+<style>
+    /* 🌌 Base Styles */
+    body {
+        background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
+        min-height: 100vh;
+        margin: 0;
+        font-family: 'Inter', -apple-system, sans-serif;
+        animation: gradientShift 15s ease infinite;
+    }
+
+    /* 🪄 Login Container */
+    .login-container {
+        width: 100%;
+        max-width: 420px;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(25px);
+        padding: 2.5rem;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        transform-style: preserve-3d;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transform: translateY(-10%);
+    }
+
+    .login-container:hover {
+        transform: translateY(-5px) scale(1.01);
+    }
+
+    /* ✨ Typography */
+    .gradient-text {
+        background: linear-gradient(45deg, #00ff88, #00ffe5);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+    }
+
+    .text-neon {
+        color: rgba(255, 255, 255, 0.85);
+        text-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+    }
+
+    /* 🖋️ Form Elements */
+    .form-control {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: white;
+        padding: 14px;
+        border-radius: 12px;
+        transition: all 0.25s ease;
+    }
+
+    .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.4);
+        font-weight: 300;
+    }
+
+    .form-control:focus {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: #00ff88;
+        box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+    }
+
+    /* 🎮 Interactive Elements */
+    .btn-glow {
+        background: linear-gradient(45deg, #00ff88, #00e0ff);
+        border: none;
+        color: #1a1a2e;
+        font-weight: 700;
+        padding: 16px;
+        border-radius: 12px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-glow:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 255, 136, 0.4);
+    }
+
+    .btn-arrow {
+        margin-left: 10px;
+        opacity: 0;
+        transform: translateX(-10px);
+        transition: all 0.3s ease;
+    }
+
+    .btn-glow:hover .btn-arrow {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    /* 🔗 Links & Utilities */
+    .text-link {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    .text-link:hover {
+        color: #00ff88;
+        text-shadow: 0 0 12px rgba(0, 255, 136, 0.3);
+    }
+
+    .text-divider {
+        color: rgba(255, 255, 255, 0.3);
+        margin: 0 12px;
+    }
+
+    /* 🌓 Animations */
+    @keyframes gradientShift {
+        0% { background-position: 0% 50% }
+        50% { background-position: 100% 50% }
+        100% { background-position: 0% 50% }
+    }
+
+    /* 📱 Responsive Design */
+    @media (max-width: 480px) {
+        .login-container {
+            padding: 1.8rem;
+            margin: 0 1rem;
+            border-radius: 16px;
+            transform: translateY(-20%);
+        }
+        
+        .gradient-text {
+            font-size: 1.8rem;
+        }
+    }
+</style>
+{% endblock %}
+</body>
+</html>
