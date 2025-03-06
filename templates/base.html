@@ -75,19 +75,21 @@
         }
 
         /* 🌟 Back to Top Button */
+/* 🌟 Back to Top Button */
 .back-to-top {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
+    bottom: 30px;
+    right: 30px;
+    width: 55px;
+    height: 55px;
     background: linear-gradient(45deg, #00c6ff, #0072ff);
     color: white;
     border: none;
     border-radius: 50%;
     font-size: 24px;
-    text-align: center;
-    line-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
     box-shadow: 0 8px 15px rgba(0, 114, 255, 0.3);
     transition: all 0.3s ease-in-out;
@@ -100,6 +102,7 @@
 .back-to-top:hover {
     background: linear-gradient(45deg, #0072ff, #00c6ff);
     box-shadow: 0 8px 25px rgba(0, 114, 255, 0.5);
+    transform: scale(1.1);
 }
 
 /* 🎯 Show the button when scrolling */
@@ -108,15 +111,17 @@
     visibility: visible;
 }
 
-/* ✅ Responsive (Adjust for smaller screens) */
+/* ✅ Responsive Adjustments */
 @media (max-width: 768px) {
     .back-to-top {
-        width: 40px;
-        height: 40px;
+        width: 45px;
+        height: 45px;
         font-size: 20px;
-        line-height: 40px;
+        bottom: 20px;
+        right: 20px;
     }
 }
+
 
     </style>
 </head>
@@ -163,8 +168,8 @@
     </button>       
 
     <script>
-        const backToTopBtn = document.getElementById("backToTop");
-    
+       const backToTopBtn = document.getElementById("backToTop");
+
         // Show/hide button on scroll
         window.addEventListener("scroll", () => {
             if (window.scrollY > 300) {
@@ -173,11 +178,12 @@
                 backToTopBtn.classList.remove("show");
             }
         });
-    
+
         // Smooth scroll back to top
         backToTopBtn.addEventListener("click", () => {
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
+
     </script>
     
 
