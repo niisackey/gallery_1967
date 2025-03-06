@@ -6,6 +6,7 @@ import os
 from flask import send_from_directory
 from flask import send_file
 from flask_login import login_required
+from flask import after_this_request
 
 # Define Blueprints
 app_routes = Blueprint("app_routes", __name__)
@@ -16,10 +17,13 @@ auth = Blueprint("auth", __name__)
 def index():
     images = Image.query.all()
 
-    # ✅ Set of purchased images (Tracks purchases)
-    purchased_images = {payment.image_id for payment in Payment.query.filter_by(user_id=current_user.id, status="paid").all()}
+    # ✅ Refresh purchased images after every page reload
+    purchased_images = {
+        payment.image_id for payment in Payment.query.filter_by(user_id=current_user.id, status="paid").all()
+    }
 
     return render_template("index.html", images=images, purchased_images=purchased_images)
+
 
 
 @app_routes.route("/secure_image/<filename>")
@@ -41,7 +45,7 @@ def secure_image(filename):
 @app_routes.route("/download/<int:image_id>")
 @login_required
 def download(image_id):
-    """Serve image for download with correct headers for mobile storage."""
+    """Serve image for download and reset purchase status only after download."""
     payment = Payment.query.filter_by(user_id=current_user.id, image_id=image_id, status="paid").first()
     
     if not payment:
@@ -55,12 +59,29 @@ def download(image_id):
         flash("File not found!", "danger")
         return redirect(url_for("app_routes.index"))
 
-    return send_file(
-        file_path, 
-        as_attachment=True,
-        mimetype="image/jpeg",  # Change this if using PNGs
-        download_name=image.filename
-    )
+    # ✅ Detect MIME type dynamically
+    mimetype = "image/jpeg"  # Default
+    ext = image.filename.lower().split(".")[-1]
+    if ext == "png":
+        mimetype = "image/png"
+    elif ext == "gif":
+        mimetype = "image/gif"
+    elif ext == "webp":
+        mimetype = "image/webp"
+    elif ext == "bmp":
+        mimetype = "image/bmp"
+    elif ext in ["tiff", "tif"]:
+        mimetype = "image/tiff"
+
+    # ✅ Reset purchase status **AFTER** the file is sent successfully
+    @after_this_request
+    def remove_purchase(response):
+        db.session.delete(payment)
+        db.session.commit()
+        return response
+
+    return send_file(file_path, as_attachment=True, mimetype=mimetype, download_name=image.filename)
+
 
 
 
