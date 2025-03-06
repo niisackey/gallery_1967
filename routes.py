@@ -41,22 +41,26 @@ def secure_image(filename):
 @app_routes.route("/download/<int:image_id>")
 @login_required
 def download(image_id):
-    # ✅ Check if the user has purchased the image
+    """Serve image for download with correct headers for mobile storage."""
     payment = Payment.query.filter_by(user_id=current_user.id, image_id=image_id, status="paid").first()
     
     if not payment:
         flash("You need to purchase this image first.", "danger")
         return redirect(url_for("app_routes.index"))
 
-    # ✅ Remove payment record to reset the purchase status
-    db.session.delete(payment)
-    db.session.commit()
+    image = Image.query.get_or_404(image_id)
+    file_path = os.path.join(current_app.config["UPLOAD_FOLDER"], image.filename)
 
-    # ✅ Refresh the page so "Buy" button returns
-    flash("Download successful! You can now re-purchase if needed.", "success")
-    return redirect(url_for("app_routes.index"))
+    if not os.path.exists(file_path):
+        flash("File not found!", "danger")
+        return redirect(url_for("app_routes.index"))
 
-
+    return send_file(
+        file_path, 
+        as_attachment=True,
+        mimetype="image/jpeg",  # Change this if using PNGs
+        download_name=image.filename
+    )
 
 
 
