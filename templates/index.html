@@ -20,18 +20,23 @@
         body {
             background: linear-gradient(135deg, var(--background-light), #ffffff);
             color: var(--text-dark);
-           
             min-height: 100vh;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
-     
+        .gallery-container {
+            padding: 3rem 0;
+        }
 
         .gallery-header {
             text-align: center;
             margin-bottom: 30px;
         }
-
-       
 
         .price-badge {
             position: absolute;
@@ -45,85 +50,34 @@
             z-index: 2;
         }
 
-       
         .category-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-bottom: 30px;
-        overflow-x: auto; /* Enable horizontal scrolling */
-        padding: 10px 0; /* Add some vertical padding */
-        -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
-    }
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding: 10px 0;
+            -webkit-overflow-scrolling: touch;
+        }
 
-        /* ✅ Modern Styled Divider */
-    /* ✅ Sleek Black Divider */
-.styled-divider {
-    border: none;
-    height: 4px; /* Adjust thickness */
-    width: 50%; /* Adjust width */
-    margin: 15px auto; /* Center it */
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3));
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    animation: glowingBlack 1.5s infinite alternate;
-}
+        .styled-divider {
+            border: none;
+            height: 4px;
+            width: 50%;
+            margin: 15px auto;
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3));
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            animation: glowingBlack 1.5s infinite alternate;
+        }
 
-/* ✨ Subtle Black Glow Effect */
-@keyframes glowingBlack {
-    0% {
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
-    }
-    100% {
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
-    }
-}
-
-
-/* Mobile-first responsive adjustments */
-@media (max-width: 768px) {
-    .category-buttons {
-        justify-content: flex-start; /* Align buttons to left */
-        scrollbar-width: none; /* Hide scrollbar in Firefox */
-        padding: 10px 15px; /* Add horizontal padding */
-        gap: 10px;
-    }
-    
-    .category-buttons::-webkit-scrollbar {
-        display: none; /* Hide scrollbar in WebKit browsers */
-    }
-    
-    .category-btn {
-    flex-shrink: 0; /* Prevent button shrinking */
-    min-width: fit-content; /* Adjust width to content */
-    max-width: 90px; /* Set a reasonable max width */
-    padding: 8px 16px; /* Adjust padding for a compact look */
-    white-space: nowrap; /* Prevent text wrapping */
-    background-color: black !important; /* Change color to black */
-    color: white !important;
-    font-size: 14px; /* Reduce font size for better fit */
-    border-radius: 8px;
-    gap: 20px;
-}
-
-}
-
-@media (max-width: 480px) {
-    .category-buttons {
-        gap: 6px;
-        
-    }
-    
-    .category-btn {
-        padding: 8px 12px;
-        font-size: 0.85rem;
-        flex-basis: calc(50% - 6px); /* 2 buttons per row */
-    }
-}
+        @keyframes glowingBlack {
+            0% { box-shadow: 0 0 5px rgba(0, 0, 0, 0.4); }
+            100% { box-shadow: 0 0 15px rgba(0, 0, 0, 0.7); }
+        }
 
         .category-btn {
             background: var(--black);
-            
             border: none;
             color: var(--white);
             font-weight: 650;
@@ -131,7 +85,6 @@
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
-           
         }
 
         .category-btn:hover, 
@@ -198,7 +151,6 @@
             object-fit: cover;
             border-radius: 10px;
         }
-        
 
         .media-item {
             transition: all 0.3s ease;
@@ -231,24 +183,70 @@
             z-index: 9999;
         }
 
-        /* ✅ Make "Citadel" Text Thinner */
-    .thin-title {
-        font-weight: 300;  /* Thinner text */
-        letter-spacing: -0.5px; /* Slightly reduce spacing for elegance */
-        
-    }
+        .thin-title {
+            font-weight: 300;
+            letter-spacing: -0.5px;
+        }
 
+        /* New Blur Styles */
+        .media-blur {
+            filter: blur(1.5rem) brightness(0.5);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .screenshot-blur {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(2rem);
+            z-index: 99999;
+            pointer-events: none;
+            display: none;
+        }
 
         @media (max-width: 768px) {
             .media-container {
                 height: 200px;
             }
-
+            
             .media-container img {
-            object-fit: contain;
+                object-fit: contain;
+            }
+            
+            .category-buttons {
+                justify-content: flex-start;
+                scrollbar-width: none;
+                padding: 10px 15px;
+                gap: 10px;
+            }
+            
+            .category-buttons::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .category-btn {
+                flex-shrink: 0;
+                min-width: fit-content;
+                max-width: 90px;
+                padding: 8px 16px;
+                font-size: 14px;
+            }
         }
-    }
-        
+
+        @media (max-width: 480px) {
+            .category-buttons {
+                gap: 6px;
+            }
+            
+            .category-btn {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+                flex-basis: calc(50% - 6px);
+            }
+        }
     </style>
 </head>
 <body>
@@ -256,6 +254,7 @@
 
    {% block content %}
 
+   <div class="screenshot-blur" id="screenshotBlur"></div>
    <div id="securityAlert" class="security-alert">⚠️ Security Warning: Action Blocked!</div>
 
    {% with messages = get_flashed_messages(with_categories=true) %}
@@ -329,22 +328,33 @@
    </div>
 
    <script>
-    // Category Filter Functionality
     document.addEventListener('DOMContentLoaded', () => {
         const categoryButtons = document.querySelectorAll('.category-btn');
         const mediaItems = document.querySelectorAll('.media-item');
         const securityAlert = document.getElementById('securityAlert');
+        const blurOverlay = document.getElementById('screenshotBlur');
+        const mediaElements = document.querySelectorAll('.protected-media');
+        let blurTimeout;
 
-        // Initialize filter
+        const activateBlur = () => {
+            mediaElements.forEach(media => media.classList.add('media-blur'));
+            blurOverlay.style.display = 'block';
+            securityAlert.style.display = 'block';
+            
+            if(blurTimeout) clearTimeout(blurTimeout);
+            blurTimeout = setTimeout(() => {
+                mediaElements.forEach(media => media.classList.remove('media-blur'));
+                blurOverlay.style.display = 'none';
+                securityAlert.style.display = 'none';
+            }, 3000);
+        };
+
         const filterMedia = (category) => {
             mediaItems.forEach(item => {
-                item.classList.toggle('d-none', 
-                    category !== 'all' && item.dataset.category !== category
-                );
+                item.classList.toggle('d-none', category !== 'all' && item.dataset.category !== category);
             });
         };
 
-        // Handle category button clicks
         categoryButtons.forEach(button => {
             button.addEventListener('click', () => {
                 categoryButtons.forEach(btn => btn.classList.remove('active'));
@@ -353,25 +363,49 @@
             });
         });
 
-        // Initial filter
         filterMedia('all');
 
-        // Image Protection
         document.querySelectorAll('.protected-media').forEach(img => {
             img.addEventListener('contextmenu', (e) => {
                 e.preventDefault();
-                securityAlert.style.display = 'block';
-                setTimeout(() => securityAlert.style.display = 'none', 2000);
+                activateBlur();
             });
         });
 
-        // Prevent dragging
         document.addEventListener('dragstart', (e) => {
             if(e.target.classList.contains('protected-media')) {
                 e.preventDefault();
-                securityAlert.style.display = 'block';
-                setTimeout(() => securityAlert.style.display = 'none', 2000);
+                activateBlur();
             }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'PrintScreen' || e.keyCode === 44) {
+                activateBlur();
+                navigator.clipboard.writeText('');
+            }
+        });
+
+        window.addEventListener('blur', () => activateBlur());
+
+        let touchStartY = 0;
+        document.addEventListener('touchstart', e => {
+            if(e.touches.length > 2) activateBlur();
+            touchStartY = e.touches[0].clientY;
+        });
+
+        document.addEventListener('touchmove', e => {
+            const touchEndY = e.touches[0].clientY;
+            if (e.touches.length > 2 && touchEndY - touchStartY > 100) {
+                e.preventDefault();
+                activateBlur();
+            }
+        });
+
+        let lastScroll = window.scrollY;
+        window.addEventListener('scroll', () => {
+            if(Math.abs(window.scrollY - lastScroll) > 100) activateBlur();
+            lastScroll = window.scrollY;
         });
     });
    </script>
