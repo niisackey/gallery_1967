@@ -6,6 +6,8 @@ from models import db, User, bcrypt  # ✅ Import bcrypt from models
 from routes import app_routes
 from auth import auth
 import os
+from models import db, seed_users 
+
 
 app = Flask(__name__)
 app.config.from_object("config.Config")  # ✅ Ensure Config is set
@@ -18,6 +20,10 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 db.init_app(app)
 migrate = Migrate(app, db)
 
+with app.app_context():
+    db.create_all()  # ✅ Ensure tables exist
+    seed_users()  # ✅ Insert predefined users if missing
+    
 # ✅ Initialize LoginManager
 login_manager = LoginManager()
 login_manager.init_app(app)

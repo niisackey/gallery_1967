@@ -11,6 +11,7 @@
          body{
             scroll-behavior: smooth !important;
             font-family: "Poppins", serif !important;
+            background-image: url(../static/images/logo.png);
         }
       
         .poppins-regular {
@@ -69,137 +70,109 @@
 </div>
 
 <style>
-    /* 🌌 Base Styles */
-    body {
-        background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
-        min-height: 100vh;
-        margin: 0;
-        font-family: 'Inter', -apple-system, sans-serif;
-        animation: gradientShift 15s ease infinite;
-    }
+/* 🌌 Full-Height Login Screen - No Scrolling */
+html, body {
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* 🚀 Prevent scrolling */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url('/static/images/login.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Inter', -apple-system, sans-serif;
+}
 
-    /* 🪄 Login Container */
+/* 📦 Login Container - Centered & Fixed */
+.login-container {
+    width: 100%;
+    max-width: 600px; /* 🔥 Increased width */
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px);
+    padding: 3rem; /* ✨ More padding for better spacing */
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    transform: translateY(0); /* 🚀 Prevent shifting */
+}
+
+/* ✨ Typography */
+.gradient-text {
+    background: linear-gradient(45deg, #00ff88, #00ffe5);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+/* 🖋️ Form Elements */
+.form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    padding: 14px;
+    border-radius: 12px;
+    transition: all 0.25s ease;
+    width: 100% !important;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 300;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #00ff88;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+}
+
+/* 🎮 Interactive Elements */
+.btn-glow {
+    background: linear-gradient(45deg, #00ff88, #00e0ff);
+    border: none;
+    color: #1a1a2e;
+    font-weight: 700;
+    padding: 16px;
+    border-radius: 12px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-glow:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 255, 136, 0.4);
+}
+
+/* 🌓 Animations */
+@keyframes gradientShift {
+    0% { background-position: 0% 50% }
+    50% { background-position: 100% 50% }
+    100% { background-position: 0% 50% }
+}
+
+/* 📱 Responsive Design */
+@media (max-width: 480px) {
     .login-container {
-        width: 100%;
-        max-width: 420px;
-        background: rgba(255, 255, 255, 0.08);
-        backdrop-filter: blur(25px);
-        padding: 2.5rem;
-        border-radius: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        transform-style: preserve-3d;
-        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        transform: translateY(-10%);
+        max-width: 380px; /* 🔹 More compact on small screens */
+        padding: 2rem;
     }
-
-    .login-container:hover {
-        transform: translateY(-5px) scale(1.01);
-    }
-
-    /* ✨ Typography */
+    
     .gradient-text {
-        background: linear-gradient(45deg, #00ff88, #00ffe5);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        font-weight: 800;
-        letter-spacing: -0.03em;
+        font-size: 1.8rem;
     }
+}
 
-    .text-neon {
-        color: rgba(255, 255, 255, 0.85);
-        text-shadow: 0 0 8px rgba(0, 255, 136, 0.3);
+@media (max-width: 768px) {
+    .login-container {
+        max-width: 460px; /* 🔹 Slightly smaller on tablets */
+        padding: 2.5rem;
     }
-
-    /* 🖋️ Form Elements */
-    .form-control {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        color: white;
-        padding: 14px;
-        border-radius: 12px;
-        transition: all 0.25s ease;
-    }
-
-    .form-control::placeholder {
-        color: rgba(255, 255, 255, 0.4);
-        font-weight: 300;
-    }
-
-    .form-control:focus {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: #00ff88;
-        box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-    }
-
-    /* 🎮 Interactive Elements */
-    .btn-glow {
-        background: linear-gradient(45deg, #00ff88, #00e0ff);
-        border: none;
-        color: #1a1a2e;
-        font-weight: 700;
-        padding: 16px;
-        border-radius: 12px;
-        position: relative;
-        overflow: hidden;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .btn-glow:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(0, 255, 136, 0.4);
-    }
-
-    .btn-arrow {
-        margin-left: 10px;
-        opacity: 0;
-        transform: translateX(-10px);
-        transition: all 0.3s ease;
-    }
-
-    .btn-glow:hover .btn-arrow {
-        opacity: 1;
-        transform: translateX(0);
-    }
-
-    /* 🔗 Links & Utilities */
-    .text-link {
-        color: rgba(255, 255, 255, 0.7);
-        text-decoration: none;
-        transition: color 0.2s ease;
-    }
-
-    .text-link:hover {
-        color: #00ff88;
-        text-shadow: 0 0 12px rgba(0, 255, 136, 0.3);
-    }
-
-    .text-divider {
-        color: rgba(255, 255, 255, 0.3);
-        margin: 0 12px;
-    }
-
-    /* 🌓 Animations */
-    @keyframes gradientShift {
-        0% { background-position: 0% 50% }
-        50% { background-position: 100% 50% }
-        100% { background-position: 0% 50% }
-    }
-
-    /* 📱 Responsive Design */
-    @media (max-width: 480px) {
-        .login-container {
-            padding: 1.8rem;
-            margin: 0 1rem;
-            border-radius: 16px;
-            transform: translateY(-20%);
-        }
-        
-        .gradient-text {
-            font-size: 1.8rem;
-        }
-    }
+}
 </style>
 {% endblock %}
 </body>
