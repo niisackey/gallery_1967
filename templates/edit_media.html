@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Edit Media</h2>
+
+    <form method="POST">
+        <div class="mb-3">
+            <label class="form-label">Media Title</label>
+            <input type="text" name="title" value="{{ media.title }}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Price (GHS)</label>
+            <input type="number" name="price" value="{{ media.price }}" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Media Type</label>
+            <select name="media_type" class="form-control" required>
+                <option value="image" {% if media.media_type == "image" %}selected{% endif %}>Image</option>
+                <option value="audio" {% if media.media_type == "audio" %}selected{% endif %}>Audio</option>
+                <option value="video" {% if media.media_type == "video" %}selected{% endif %}>Video</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+    </form>
+</div>
+{% endblock %}

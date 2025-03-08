@@ -66,20 +66,18 @@ def secure_media(filename):
 @app_routes.route("/edit_media/<int:media_id>", methods=["GET", "POST"])
 @login_required
 def edit_media(media_id):
-    if not current_user.is_admin:
-        flash("Access Denied!", "danger")
-        return redirect(url_for("app_routes.index"))
-
     media = Media.query.get_or_404(media_id)
 
     if request.method == "POST":
         media.title = request.form["title"]
         media.price = request.form["price"]
+        media.media_type = request.form["media_type"]  # ✅ Update media type
         db.session.commit()
-        flash("Media details updated successfully!", "success")
+        flash("Media updated successfully!", "success")
         return redirect(url_for("app_routes.admin"))
 
     return render_template("edit_media.html", media=media)
+
 
 
 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Citadel Gallery | Secure Media Vault</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/logomain.png') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -19,7 +20,7 @@
         body {
             background: linear-gradient(135deg, var(--background-light), #ffffff);
             color: var(--text-dark);
-            font-family: 'Inter', system-ui, sans-serif;
+           
             min-height: 100vh;
         }
 
@@ -32,14 +33,7 @@
             margin-bottom: 30px;
         }
 
-        .gallery-header h1 {
-            font-size: 2.8rem;
-            font-weight: 800;
-            background: black;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
+       
 
         .price-badge {
             position: absolute;
@@ -49,7 +43,7 @@
             color: var(--white) !important;
             padding: 8px 15px;
             border-radius: 8px;
-            font-weight: 800;
+            font-weight: 400;
             z-index: 2;
         }
 
@@ -63,6 +57,30 @@
         padding: 10px 0; /* Add some vertical padding */
         -webkit-overflow-scrolling: touch; /* Smooth scrolling on mobile */
     }
+
+        /* ✅ Modern Styled Divider */
+    /* ✅ Sleek Black Divider */
+.styled-divider {
+    border: none;
+    height: 4px; /* Adjust thickness */
+    width: 50%; /* Adjust width */
+    margin: 15px auto; /* Center it */
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3));
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    animation: glowingBlack 1.5s infinite alternate;
+}
+
+/* ✨ Subtle Black Glow Effect */
+@keyframes glowingBlack {
+    0% {
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+    }
+}
+
 
 /* Mobile-first responsive adjustments */
 @media (max-width: 768px) {
@@ -103,7 +121,7 @@
             background: var(--black);
             border: none;
             color: var(--white);
-            font-weight: 700;
+            font-weight: 650;
             padding: 12px 25px;
             border-radius: 10px;
             cursor: pointer;
@@ -207,6 +225,14 @@
             z-index: 9999;
         }
 
+        /* ✅ Make "Citadel" Text Thinner */
+    .thin-title {
+        font-weight: 300;  /* Thinner text */
+        letter-spacing: -0.5px; /* Slightly reduce spacing for elegance */
+        
+    }
+
+
         @media (max-width: 768px) {
             .media-container {
                 height: 200px;
@@ -242,9 +268,9 @@
    <div class="gallery-container">
        <div class="container">
            <div class="gallery-header">
-               <h1><span style="color: gray;">Citadel</span> Media Gallery</h1>
+               <h1 class="thin-title">Citadel <span style="color: rgb(129, 116, 116); font-weight: 500;">Media Gallery</span></h1>
            </div>
-
+            <hr class="styled-divider">
            <div class="category-buttons">
                <button class="category-btn active" data-category="all">All</button>
                <button class="category-btn" data-category="image">Images</button>
