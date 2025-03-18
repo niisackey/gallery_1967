@@ -84,18 +84,22 @@ def edit_media(media_id):
 @app_routes.route("/download/<int:media_id>")
 @login_required
 def download(media_id):
-    """Serve media for download and reset purchase status only after download."""
-    payment = Payment.query.filter_by(user_id=current_user.id, media_id=media_id, status="paid").first()
-
-    if not payment:
-        flash("You need to purchase this media first.", "danger")
-        return redirect(url_for("app_routes.index"))
-
+    """Serve media for download. Free media is available without purchase."""
     media = Media.query.get_or_404(media_id)
     file_path = os.path.join(current_app.config["UPLOAD_FOLDER"], media.filename)
 
     if not os.path.exists(file_path):
         flash("File not found!", "danger")
+        return redirect(url_for("app_routes.index"))
+
+    # ✅ Allow free media downloads immediately
+    if media.price == 0:
+        return send_file(file_path, as_attachment=True, download_name=media.filename)
+
+    # ✅ Validate if user has paid for the media
+    payment = Payment.query.filter_by(user_id=current_user.id, media_id=media_id, status="paid").first()
+    if not payment:
+        flash("You need to purchase this media first.", "danger")
         return redirect(url_for("app_routes.index"))
 
     # ✅ Detect MIME type dynamically
@@ -110,11 +114,12 @@ def download(media_id):
     }
     mimetype = mimetype_map.get(ext, "application/octet-stream")
 
-    # ✅ Reset purchase status **AFTER** the file is sent successfully
+    # ✅ Only delete purchase if media was paid for
     @after_this_request
     def remove_purchase(response):
-        db.session.delete(payment)
-        db.session.commit()
+        if media.price > 0 and payment:
+            db.session.delete(payment)
+            db.session.commit()
         return response
 
     return send_file(file_path, as_attachment=True, mimetype=mimetype, download_name=media.filename)
@@ -195,13 +200,16 @@ def confirm_payment(media_id):
     response = requests.get(verify_url, headers=headers)
     response_data = response.json()
 
-    if response_data["data"]["status"] == "success":
+    media = Media.query.get_or_404(media_id)
+
+    # ✅ Only store purchase record if media is paid
+    if media.price > 0 and response_data["data"]["status"] == "success":
         new_payment = Payment(user_id=current_user.id, media_id=media_id, reference=reference, status="paid")
         db.session.add(new_payment)
         db.session.commit()
         flash("Payment successful! You can now download the media.", "success")
     else:
-        flash("Payment failed.", "danger")
+        flash("Payment failed or media is free.", "danger")
 
     return redirect(url_for("app_routes.index"))
 
